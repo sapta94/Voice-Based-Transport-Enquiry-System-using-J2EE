@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+  <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?sensor=false"></script>
+<title>Insert title here</title>
+</head>
+<body>
+<button onclick="getLocation()">click</button>
+   <script>
+  
+   
+// say a message
+function speak(text, callback) {
+    var u = new SpeechSynthesisUtterance();
+    u.text = text;
+    u.lang = 'en-US';
+ 
+    u.onend = function () {
+        if (callback) {
+            callback();
+        }
+    };
+ 
+    u.onerror = function (e) {
+        if (callback) {
+            callback(e);
+        }
+    };
+ 
+    speechSynthesis.speak(u);
+} 
+</script>
+<script>
+ function getLocation() {
+	 document.write('Here');
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+       alert( "Geolocation is not supported by this browser.");
+    }
+}
+
+function showPosition(position) {
+	document.write('Here1');
+	speak('You are in Liluah, Howrah');
+   var latlng = {lat: parseFloat(position.coords.latitude), lng: parseFloat(position.coords.longitude)};
+   var geocoder =  new google.maps.Geocoder();
+   document.write( parseFloat(position.coords.latitude));
+   geocoder.geocode({ 'location': latlng }, function (results, status) {
+       if (status == google.maps.GeocoderStatus.OK) {
+           if (results[1]) {
+               alert("Location: " + results[1].formatted_address);
+           }
+       } else
+    	   alert('Not working');
+   });
+   
+} 
+        
+   </script>
+</body>
+</html>

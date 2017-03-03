@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Voice Transport Enquiry</title>
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.1/css/font-awesome.min.css" />
+		<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+		<style type="text/css">
+			body{
+				font-family: verdana;
+				 background-image: url(a2.jpg);
+			}
+			#cov {
+  				 position: fixed;
+   				 top:0px;
+  				 left:0px;
+  			}
+ 
+  #content{
+   position:absolute;
+   top:300px;
+  }
+  h1 {
+   color:#efe440;
+  }
+  .buton{
+	width:100px;
+	border-radius: 4px;
+	border: 1px solid;
+	background-color: #4286f4;
+	padding: 8px;
+	color: white;
+	font-family:"Arial"; 
+	font-size: 16px;	
+}
+input[type=text] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+}
+			
+		</style>
+</head>
+<body>
+ 
+  <div id="cov">
+		<img src="a1.jpg" />
+	 </div>
+	 <div id="content">
+	   <h1>Welcome</h1>
+	 </div>
+	 <form  method="get" id="form1" action="FetchServlet">
+	 <div style="position:absolute; top:400px;">
+        <label style="color:#994959; font-size:28px;">Enter source: </label> 
+		
+		<input type="text" name="source" id="result1" onfocus="startConvertings()" onblur="stopConverting()" placeholder="Enter starting location..." > 		
+		<label style="color:#994959; font-size:28px;">Enter Destination:</label> <br/> <br/>
+		<input type="text" name="dest" id="result" onfocus="startConvertingd()" onblur="stopConverting()" placeholder="Enter destination location..." > <br><br>
+		<input type="submit" value="Search" id="sb" onclick="wf.html" class="buton" />
+		
+    </div>
+      <div style="position:absolute; top:400px; right:100px;">
+      <label style="color:#b51b49; font-size:28px;">Enter type: </label><br>
+        <input name="mode" type="text" id="typ" onfocus="startConvertingt()">
+        
+        <p>Modes of transport available:</p>
+        <ul>
+          <li>Bus</li>
+          <li>Train</li>
+          <li>Cab</li>
+          <li>Transit</li>
+        </ul>
+      </div>
+      </form>
+		<script type="text/javascript">
+		
+		window.onload = function() {
+			speak('You are in Howrah');
+			  document.getElementById("result1").focus();
+			};
+		
+			var r = document.getElementById('result1');
+			var d=document.getElementById('result');
+			var typ=document.getElementById('typ');
+			
+			var speechRecognizer = new webkitSpeechRecognition();
+			
+			//for source
+			function startConvertings () {
+				if('webkitSpeechRecognition' in window){
+					
+					
+					speechRecognizer.continuous = true;
+					speechRecognizer.interimResults = true;
+					speechRecognizer.lang = 'en-IN';
+					speechRecognizer.start();
+
+					var finalTranscripts = '';
+
+					speechRecognizer.onresult = function(event){
+						var interimTranscripts = '';
+						for(var i = event.resultIndex; i < event.results.length; i++){
+							var transcript = event.results[i][0].transcript;
+							if(transcript.indexOf("next") !== -1)
+								{
+								   transcript=transcript.substring(0,transcript.indexOf("next")-1);
+									stopConverting();
+									document.getElementById('result').focus();
+								}
+							transcript.replace("\n", "<br>");
+
+							if(event.results[i].isFinal){
+								finalTranscripts += transcript;
+							}else{
+								interimTranscripts += transcript;
+							}
+						}
+						r.value = finalTranscripts + interimTranscripts ;
+					};
+					speechRecognizer.onerror = function (event) {
+					};
+				}else{
+					r.value = 'Your browser is not supported. If google chrome, please upgrade!';
+				}
+			}
+
+			//for destination
+			function startConvertingd () {
+				if('webkitSpeechRecognition' in window){
+					//var speechRecognizer = new webkitSpeechRecognition();
+					speechRecognizer.continuous = true;
+					speechRecognizer.interimResults = true;
+					speechRecognizer.lang = 'en-IN';
+					speechRecognizer.start();
+
+					var finalTranscripts = '';
+
+					speechRecognizer.onresult = function(event){
+						var interimTranscripts = '';
+						for(var i = event.resultIndex; i < event.results.length; i++){
+							var transcript = event.results[i][0].transcript;
+							transcript.replace("\n", "<br>");
+							if(transcript.indexOf("next") !== -1)
+							{
+							   transcript=transcript.substring(0,transcript.indexOf("next")-1);
+								stopConverting();
+								document.getElementById('typ').focus();
+							}
+							if(event.results[i].isFinal){
+								finalTranscripts += transcript;
+							}else{
+								interimTranscripts += transcript;
+							}
+						}
+						d.value = finalTranscripts + interimTranscripts ;
+					};
+					speechRecognizer.onerror = function (event) {
+					};
+				}else{
+				dr.value = 'Your browser is not supported. If google chrome, please upgrade!';
+				}
+			}
+			
+			//for type
+			function startConvertingt () {
+				if('webkitSpeechRecognition' in window){
+					
+					speechRecognizer.continuous = true;
+					speechRecognizer.interimResults = true;
+					speechRecognizer.lang = 'en-IN';
+					speechRecognizer.start();
+
+					var finalTranscripts = '';
+
+					speechRecognizer.onresult = function(event){
+						var interimTranscripts = '';
+						for(var i = event.resultIndex; i < event.results.length; i++){
+							var transcript = event.results[i][0].transcript;
+							transcript.replace("\n", "<br>");
+							if(transcript.indexOf("go") !== -1) 
+								{
+								  transcript=transcript.substring(0,transcript.indexOf("go")-1);
+								  var txt= "Processing data, from "+r.value+"to, "+d.value+"via, "+typ.value;
+								  speak(txt);
+								  document.getElementById("form1").submit();
+								}
+							if(event.results[i].isFinal){
+								finalTranscripts += transcript;
+							}else{
+								interimTranscripts += transcript;
+							}
+						}
+						typ.value = finalTranscripts + interimTranscripts ;
+					};
+					speechRecognizer.onerror = function (event) {
+					};
+				}else{
+				typ.value = 'Your browser is not supported. If google chrome, please upgrade!';
+				}
+			}
+			
+			
+			//to stop voice-text conversion
+			function stopConverting()
+			{
+				speechRecognizer.stop();
+			}
+
+			
+		</script>
+		
+<script>
+  
+   
+// text-to-speech
+function speak(text, callback) {
+    var u = new SpeechSynthesisUtterance();
+    u.text = text;
+    u.lang = 'en-US';
+ 
+    u.onend = function () {
+        if (callback) {
+            callback();
+        }
+    };
+ 
+    u.onerror = function (e) {
+        if (callback) {
+            callback(e);
+        }
+    };
+ 
+    speechSynthesis.speak(u);
+} 
+</script>
+		
+</body>
+</html>
