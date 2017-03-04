@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple markers</title>
+    <style>     
+      #map {
+        height: 50%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+  <label>Enter destination: </label><input type ="text" id="dest">
+	  <input type="submit" onclick="foo()" value="Get"> <br/>
+    <div id="map"></div>
+	<script>
+	    window.onload = function() {
+     
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    } else { 
+        alert("Geolocation is not supported by this browser.");
+    }
+
+
+   function showPosition(position) {
+     initMap(position.coords.latitude,position.coords.longitude);
+ }
+ };
+	</script>
+    <script>
+      
+	
+
+        function foo(){
+		var geocoder = new google.maps.Geocoder();
+		var address = document.getElementById("dest").value;
+		geocoder.geocode( { 'address': address}, function(results, status) {
+
+		if (status == google.maps.GeocoderStatus.OK) {
+			var latitude = results[0].geometry.location.lat();
+			var longitude = results[0].geometry.location.lng();
+			//alert(latitude);
+			//alert(longitude);
+			initMap(latitude,longitude);
+		} 
+		}); 
+		}
+	  
+      function initMap(latitude,longitude) {
+        var myLatLng = {lat: latitude, lng: longitude};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 14,
+          center: myLatLng
+        });
+
+        var marker = new google.maps.Marker({
+          position: myLatLng,
+          map: map,
+          title: 'Hello World!'
+        });
+		
+      }
+    </script>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6DVVsOQbq6nL9S2aFHy_lptCX4xsa5jg&callback=initMap">
+    </script>
+  </body>
+</html>
