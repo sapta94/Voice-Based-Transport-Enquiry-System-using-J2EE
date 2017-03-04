@@ -17,6 +17,7 @@
   </head>
   <body>
   <label>Enter destination: </label><input type ="text" id="dest">
+  <input type ="text" id="src" hidden>
 	  <input type="submit" onclick="foo()" value="Get"> <br/>
     <div id="map"></div>
 	<script>
@@ -37,7 +38,7 @@
     <script>
       
 	
-
+        
         function foo(){
 		var geocoder = new google.maps.Geocoder();
 		var address = document.getElementById("dest").value;
@@ -48,25 +49,46 @@
 			var longitude = results[0].geometry.location.lng();
 			//alert(latitude);
 			//alert(longitude);
+      var l=latitude+","+longitude;
+      document.getElementById("src").value=l.toString();
+      alert( document.getElementById("src").value);
 			initMap(latitude,longitude);
 		} 
 		}); 
 		}
 	  
       function initMap(latitude,longitude) {
+        var directionsService = new google.maps.DirectionsService;
+        var directionsDisplay = new google.maps.DirectionsRenderer;
         var myLatLng = {lat: latitude, lng: longitude};
         var map = new google.maps.Map(document.getElementById('map'), {
           zoom: 14,
           center: myLatLng
         });
-
-        var marker = new google.maps.Marker({
+            directionsDisplay.setMap(map);
+             
+        /*var marker = new google.maps.Marker({
           position: myLatLng,
           map: map,
           title: 'Hello World!'
-        });
-		
+        });*/
+		   calculateAndDisplayRoute(directionsService, directionsDisplay);
       }
+
+      function calculateAndDisplayRoute(directionsService, directionsDisplay) {
+        directionsService.route({
+          origin:  document.getElementById("src").value,
+          destination: document.getElementById('dest').value,
+          travelMode: 'DRIVING'
+        }, function(response, status) {
+          if (status === 'OK') {
+            directionsDisplay.setDirections(response);
+          } else {
+            window.alert('Directions request failed due to ' + status);
+          }
+        });
+      }
+
     </script>
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6DVVsOQbq6nL9S2aFHy_lptCX4xsa5jg&callback=initMap">
