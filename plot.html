@@ -6,13 +6,14 @@
     <title>Simple markers</title>
     <style>     
       #map {
-        height: 50%;
+        height: 60%;
       }
-      html, body {
+       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
       }
+      
     </style>
   </head>
   <body>
@@ -72,18 +73,19 @@
           map: map,
           title: 'Hello World!'
         });*/
+
 		   calculateAndDisplayRoute(directionsService, directionsDisplay);
       }
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         directionsService.route({
-          origin:  document.getElementById("src").value,
+          origin:'22.43625,88.4234',
           destination: document.getElementById('dest').value,
           travelMode: 'DRIVING'
         }, function(response, status) {
           if (status === 'OK') {
             directionsDisplay.setDirections(response);
-          } else {
+          } else { 
             window.alert('Directions request failed due to ' + status);
           }
         });
@@ -91,7 +93,7 @@
 
     </script>
     <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6DVVsOQbq6nL9S2aFHy_lptCX4xsa5jg&callback=initMap">
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6DVVsOQbq6nL9S2aFHy_lptCX4xsa5jg&callback">
     </script>
   </body>
 </html>
