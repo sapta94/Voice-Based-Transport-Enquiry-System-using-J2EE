@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Speech to text converter in JS</title>
+<title>Speech to text converter using WebSpeech API</title>
 		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.1/css/font-awesome.min.css" />
 		<style type="text/css">
 			body{
@@ -28,23 +28,7 @@
     animation: spin 1s infinite linear;
 }
 
-@keyframes spin {
-    from{
-        transform: rotate(0deg);
-    }to{
-        transform: rotate(360deg);
-    }
-}
 
-#overlay{
-  height:100%;
-  width:100%;
-  background:rgba(0, 0, 0, 1);
-  position:fixed;
-  left:0;
-  top:0;
-  z-index:9999;
- }
 			#result{
 				height: 200px;
 				border: 1px solid #ccc;
@@ -63,12 +47,11 @@
 		</style>
 </head>
 <body>
- <div id="overlay">
-    <div class="spinner"></div> 
-   </div>
+ 
   <h4 align="center">Speech to text converter in JS</h4>
 		<div id="result">
-		 <input type="text" id="result1" maxlength=100>
+		 <label>Get the converted text here:</label>
+		 <input type="text" id="result1" size="40" maxlength=100>
 		</div>
 		<button onclick="startConverting();"><i class="fa fa-microphone"></i></button>
 		<button style="position:absolute; left:61%; top:240px;" onclick="stopConverting();"><i class="fa fa-remove"></i></button>
@@ -117,18 +100,7 @@
 				speechRecognizer.stop();
 			}
 
-			/**function getLocation() {
-			    if (navigator.geolocation) {
-			        navigator.geolocation.getCurrentPosition(showPosition);
-			    } else {
-			       alert( "Geolocation is not supported by this browser.");
-			    }
-			}
-
-			function showPosition(position) {
-			   var lat= position.coords.latitude +
-			    var long= position.coords.longitude;
-			}**/
+		
 		</script>
 </body>
 </html>

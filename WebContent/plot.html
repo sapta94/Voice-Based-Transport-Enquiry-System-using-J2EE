@@ -6,7 +6,7 @@
     <title>Simple markers</title>
     <style>     
       #map {
-        height: 60%;
+        height: 50%;
       }
        html, body {
         height: 100%;
@@ -15,6 +15,9 @@
       }
       
     </style>
+        <script async defer
+    src="https://maps.googleapis.com/maps/api/js?file=api&amp;v=2.x&amp;key=AIzaSyCKxYNPPOYGg5JvW1enjxbLgnlxMA2SwQ8&callback">
+    </script>
   </head>
   <body>
   <label>Enter destination: </label><input type ="text" id="dest">
@@ -35,10 +38,6 @@
      initMap(position.coords.latitude,position.coords.longitude);
  }
  };
-	</script>
-    <script>
-      
-	
         
         function foo(){
 		var geocoder = new google.maps.Geocoder();
@@ -73,27 +72,24 @@
           map: map,
           title: 'Hello World!'
         });*/
-
 		   calculateAndDisplayRoute(directionsService, directionsDisplay);
       }
 
       function calculateAndDisplayRoute(directionsService, directionsDisplay) {
         directionsService.route({
-          origin:'22.43625,88.4234',
-          destination: document.getElementById('dest').value,
+          origin:'22.3455,88.3476',
+          destination: '22.6197799,88.3454714',
           travelMode: 'DRIVING'
         }, function(response, status) {
           if (status === 'OK') {
             directionsDisplay.setDirections(response);
-          } else { 
+          } else {
             window.alert('Directions request failed due to ' + status);
           }
         });
       }
 
     </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD6DVVsOQbq6nL9S2aFHy_lptCX4xsa5jg&callback">
-    </script>
+
   </body>
 </html>
